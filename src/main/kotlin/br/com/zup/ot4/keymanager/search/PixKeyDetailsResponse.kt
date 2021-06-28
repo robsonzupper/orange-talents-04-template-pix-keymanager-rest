@@ -15,5 +15,21 @@ data class PixKeyDetailsResponse(
     val createdAt: String
 ) {
 
-
+    companion object {
+        fun of(grpcResponse: SearchKeyResponse): PixKeyDetailsResponse {
+            return PixKeyDetailsResponse(
+                pixId = grpcResponse.pixId,
+                clientId = grpcResponse.externalClientId,
+                keyType = grpcResponse.keyType,
+                key = grpcResponse.key,
+                ownerName = grpcResponse.ownerName,
+                accountData = AccountDataResponse(grpcResponse.accountData),
+                createdAt = LocalDateTime.ofEpochSecond(
+                    grpcResponse.createdAt.seconds,
+                    grpcResponse.createdAt.nanos,
+                    ZoneOffset.UTC
+                ).toString()
+            )
+        }
+    }
 }
